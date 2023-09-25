@@ -9,15 +9,31 @@ const format: any = winston.format;
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { HotelModule } from './api/hotel/hotel.module';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const ecsFormat: any = require('@elastic/ecs-winston-format');
 const { combine, label } = format;
 
 @Module({
-  imports: [],
+  imports: [
+    ConfigModule.forRoot({
+      envFilePath: '.env',
+      isGlobal: true,
+    }),
+    WinstonModule.forRoot({
+      format: combine(
+        ecsFormat({ convertReqRes: true }),
+        label({ label: process.env.APP_LABEL }),
+        winston.format.json(),
+      ),
+      transports: [new winston.transports.Console()],
+    }),
+    MongooseModule.forRoot(process.env.DATABASE_CONNECTION_URL),
+    HotelModule,
+  ],
   controllers: [AppController],
-  providers: [],
+  providers: [AppService],
 })
 export class AppModule {
   constructor(

@@ -1,0 +1,35 @@
+export const HttpResponseStrings: Record<string, any> = {
+  en: {
+    SUCCESS: 'Success ',
+    INTERNAL_SERVER_ERROR: 'Server error',
+    NOT_FOUND: 'Data not found',
+    SERVICE_UNAVAILABLE: 'Service unavailable, please try again',
+    ERROR: 'Error',
+    LOGIN_SUCCESSFULLY: 'you have successfully logged in',
+    LOGOUT_SUCCESSFULLY: 'you have successfully logged out',
+    INVALID_CREDENTIALS: 'Invalid credentials',
+    VALID_TOKEN: 'Valid Token',
+    INVALID_TOKEN: 'Invalid Token',
+    INVALID_NAME: 'Your name includes invalid characters',
+    INVALID_AGE: 'You must be at least 16 years old',
+    INVALID_SIGN_UP_CODE: 'Invalid Sign-up Code',
+    INVALID_PASSWORD_RESET_CODE: 'Invalid Code',
+    INVALID_CITY: 'Unfortunately at this moment, your city not supported',
+    PASSWORD_CHANGED: 'Password Changed',
+    ACCOUNT_CREATED: 'User Account has been created',
+    FORBIDDEN: 'Forbidden',
+    SAME_PASSWORD: 'Old and new passwords are the same',
+    INVALID_OLD_PASSWORD: 'Incorrect current password',
+    PASSWORD_RESET_CODE_SENT_TO: 'Password reset code sent to:',
+    PASSWORD_RESET_SUCCESSFULLY: 'User Password reset successfully',
+    PASSWORD_CHANGED_SUCCESSFULLY: 'Your password changed successfully',
+    EMAIL_VERIFICATION_CODE_SENT_TO: 'E-mail verification code sent to:',
+    EMAIL_IN_USE:
+      'The email address you have entered is already registered. Please log in to your existing account or use a different email address to register a new account.',
+    WEAK_PASSWORD:
+      'Your password must be between 5 and 1024 characters long and include at least 1 lowercase letter, 1 uppercase letter, 1 number, and 1 symbol.',
+    NOT_ENOUGH_PERMISSION:
+      'You do not have sufficient permissions to perform this action',
+    SERIAL_NUMBER_ALREADY_EXIST: 'Device with this serial number already exist',
+  },
+};
