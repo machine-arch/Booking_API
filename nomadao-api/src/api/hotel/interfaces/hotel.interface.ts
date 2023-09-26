@@ -10,8 +10,8 @@ export interface HotelDocumentInterface extends mongoose.Document {
   description: string;
   longitude: number;
   latitude: number;
-  infoAtHotel: string[];
-  roomAmenities: string[];
+  infoAtHotel: string;
+  roomAmenities: string;
   postalCode: number;
   yearOfContusion: number;
   socketType: string;
