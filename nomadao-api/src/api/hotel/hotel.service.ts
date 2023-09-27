@@ -12,17 +12,19 @@ export class HotelService {
     private readonly hotelModel: Model<HotelDocumentInterface>,
   ) {}
 
-  public async create(hotel: CreateHotelDto): Promise<any> {
-    const createdHotel: HotelDocumentInterface = new this.hotelModel(hotel);
+  public async create(hotel: CreateHotelDto): Promise<HotelDocumentInterface> {
+    const createdHotel: HotelDocumentInterface = await new this.hotelModel(
+      hotel,
+    ).save();
 
-    return createdHotel.save();
+    return createdHotel;
   }
 
   public async getAllHotelsWithPag(
     query: Query,
     filerQuery: Record<string, any> = null,
-  ): Promise<any> {
-    const rePerPage: number = Number(query.limit);
+  ): Promise<HotelDocumentInterface[]> {
+    const rePerPage = Number(query.limit);
     const currentPage: number = Number(query.page) || 1;
     const skip: number = rePerPage * (currentPage - 1);
 
