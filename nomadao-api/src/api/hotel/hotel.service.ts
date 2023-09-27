@@ -45,4 +45,8 @@ export class HotelService {
 
     return hotelList;
   }
+
+  public async getSingleHotel(id: string): Promise<HotelDocumentInterface> {
+    return this.hotelModel.findById(id).exec();
+  }
 }
