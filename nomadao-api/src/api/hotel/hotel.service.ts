@@ -4,6 +4,7 @@ import { CreateHotelDto } from './dto/create-hote.dto';
 import { HotelDocumentInterface } from './interfaces/hotel.interface';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
+import { throwInternalErrorException } from 'src/common/utils/response.hendler';
 
 @Injectable()
 export class HotelService {
@@ -30,18 +31,12 @@ export class HotelService {
 
     const hotelList: HotelDocumentInterface[] = await this.hotelModel
       .find(filerQuery)
-      .select([
-        'id',
-        'hotelName',
-        'rating',
-        'reviews',
-        'images',
-        'location',
-        'price',
-        'propertyType',
-      ])
+      .select('-__v -createdAt -updatedAt')
       .limit(rePerPage)
-      .skip(skip);
+      .skip(skip)
+      .exec();
+
+    if (!hotelList) throwInternalErrorException(process.env.APP_LANGUAGES);
 
     return hotelList;
   }
