@@ -1,3 +1,4 @@
+import { Query } from 'express-serve-static-core';
 import { Injectable } from '@nestjs/common';
 import { CreateHotelDto } from './dto/create-hote.dto';
 import { HotelDocumentInterface } from './interfaces/hotel.interface';
@@ -15,5 +16,31 @@ export class HotelService {
     const createdHotel: HotelDocumentInterface = new this.hotelModel(hotel);
 
     return createdHotel.save();
+  }
+
+  public async getAllHotelsWithPag(
+    query: Query,
+    filerQuery: Record<string, any> = null,
+  ): Promise<any> {
+    const rePerPage: number = Number(query.limit);
+    const currentPage: number = Number(query.page) || 1;
+    const skip: number = rePerPage * (currentPage - 1);
+
+    const hotelList: HotelDocumentInterface[] = await this.hotelModel
+      .find(filerQuery)
+      .select([
+        'id',
+        'hotelName',
+        'rating',
+        'reviews',
+        'images',
+        'location',
+        'price',
+        'propertyType',
+      ])
+      .limit(rePerPage)
+      .skip(skip);
+
+    return hotelList;
   }
 }

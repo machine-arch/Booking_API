@@ -1,5 +1,29 @@
 import mongoose from 'mongoose';
 
+export interface PropertyTypeInterface {
+  apartments: boolean;
+  hotels: boolean;
+  homestays: boolean;
+  villas: boolean;
+  motels: boolean;
+}
+
+export interface FacilitiesInterface {
+  wakeUpCall: boolean;
+  crHire: boolean;
+  flatTv: boolean;
+  dryCleaning: boolean;
+  internet: boolean;
+}
+
+export interface HotelServiceInterface {
+  havanaLobbyBar: boolean;
+  flestaRestaurant: boolean;
+  hotelTransportService: boolean;
+  laundryService: boolean;
+  petsWelcome: boolean;
+}
+
 export interface HotelDocumentInterface extends mongoose.Document {
   _id?: string;
   hotelName: string;
@@ -18,19 +42,7 @@ export interface HotelDocumentInterface extends mongoose.Document {
   totalRooms: number;
   serviceFee: string;
   price: number;
-  apartments: boolean;
-  hotels: boolean;
-  homestays: boolean;
-  villas: boolean;
-  motels: boolean;
-  wakeUpCall: boolean;
-  crHire: boolean;
-  flatTv: boolean;
-  dryCleaning: boolean;
-  internet: boolean;
-  havanaLobbyBar: boolean;
-  flestaRestaurant: boolean;
-  hotelTransportService: boolean;
-  laundryService: boolean;
-  petsWelcome: boolean;
+  propertyType: PropertyTypeInterface;
+  facilities: FacilitiesInterface;
+  hotelService: HotelServiceInterface;
 }
