@@ -42,6 +42,21 @@ export class HotelController {
     };
   }
 
+  @Get('/filter')
+  public async getFilteredHotels(
+    @Body() requestBody: any,
+  ): Promise<ResponseDto> {
+    const result: HotelDocumentInterface[] =
+      await this.hotelService.getFilteredHotels(requestBody);
+
+    return {
+      statusCode: HttpStatus.OK,
+      message: 'OK',
+      content: result,
+      total: result.length,
+    };
+  }
+
   @Get(':id')
   public async getSingleHotel(@Param('id') id: string): Promise<ResponseDto> {
     const result: HotelDocumentInterface =

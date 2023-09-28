@@ -41,6 +41,20 @@ export class HotelService {
     return hotelList;
   }
 
+  public async getFilteredHotels(requestBody: any) {
+    const filterObj: Record<string, any> = {};
+    filterObj.location = requestBody.location;
+    // filterObj.rooms = requestBody.rooms.length;
+    // filterObj.sss = requestBody.adults
+    // filterObj.ddd = requestBody.children aks!!!
+
+    for (const key in filterObj) {
+      if (filterObj[key] === undefined) delete filterObj[key];
+    }
+
+    return this.getAllHotelsWithPag({}, filterObj);
+  }
+
   public async getSingleHotel(id: string): Promise<HotelDocumentInterface> {
     return this.hotelModel.findById(id).exec();
   }
