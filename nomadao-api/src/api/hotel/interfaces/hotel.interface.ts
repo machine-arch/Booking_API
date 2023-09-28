@@ -24,6 +24,15 @@ export interface HotelServiceInterface {
   petsWelcome: boolean;
 }
 
+export interface HotelRoomsInterface {
+  image: string;
+  bedType: string; //askabout
+  facilities: FacilitiesInterface;
+  bedCount: number; //ask about
+  guestsCount: number; //ask about
+  price: number;
+}
+
 export interface HotelDocumentInterface extends mongoose.Document {
   _id?: string;
   hotelName: string;
@@ -45,4 +54,5 @@ export interface HotelDocumentInterface extends mongoose.Document {
   propertyType: PropertyTypeInterface;
   facilities: FacilitiesInterface;
   hotelService: HotelServiceInterface;
+  hotelRooms: HotelRoomsInterface[];
 }
