@@ -20,14 +20,17 @@ export class HotelFilterController {
     @Query() query: ExpressQuery,
     @Body() requestBody: any,
   ): Promise<ResponseDto> {
-    const result: HotelDocumentInterface[] =
+    const result: { hotelList: HotelDocumentInterface[]; totalHotels: number } =
       await this.hotelService.getFilteredHotels(query, requestBody);
+
+    const hotels: HotelDocumentInterface[] = result.hotelList;
+    const total: number = result.totalHotels;
 
     return {
       statusCode: HttpStatus.OK,
       message: 'OK',
-      content: result,
-      total: result.length,
+      content: hotels,
+      total: total,
     };
   }
 }

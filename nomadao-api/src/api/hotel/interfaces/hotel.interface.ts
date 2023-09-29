@@ -26,10 +26,11 @@ export interface HotelServiceInterface {
 
 export interface HotelRoomsInterface {
   image: string;
-  bedType: string; //askabout
+  bedType: string;
   facilities: FacilitiesInterface;
-  bedCount: number; //ask about
-  guestsCount: number; //ask about
+  bedsCount: number;
+  adultsCount: number;
+  childrensCount: number;
   price: number;
   bookedDates: {
     startDate: Date;

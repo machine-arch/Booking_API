@@ -27,7 +27,7 @@ export class HotelService {
   public async getHotelsWithPag(
     query: Query,
     filerQuery: Record<string, any> = null,
-  ): Promise<HotelDocumentInterface[]> {
+  ): Promise<{ hotelList: HotelDocumentInterface[]; totalHotels: number }> {
     const rePerPage = Number(query.limit) || 10;
     const currentPage: number = Number(query.page) || 1;
     const skip: number = rePerPage * (currentPage - 1);
@@ -41,7 +41,11 @@ export class HotelService {
 
     if (!hotelList) throwInternalErrorException(process.env.APP_LANGUAGES);
 
-    return hotelList;
+    const totalHotels: number = await this.hotelModel
+      .countDocuments(filerQuery)
+      .exec();
+
+    return { hotelList, totalHotels };
   }
 
   public async getFilteredHotels(query: Query, requestBody: any) {

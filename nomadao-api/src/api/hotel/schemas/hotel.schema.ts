@@ -3,6 +3,7 @@ import { Model } from 'mongoose';
 import {
   FacilitiesInterface,
   HotelDocumentInterface,
+  HotelRoomsInterface,
   HotelServiceInterface,
   PropertyTypeInterface,
 } from '../interfaces/hotel.interface';
@@ -48,15 +49,19 @@ const HotelServiceSchema = new mongoose.Schema<HotelServiceInterface>(
   { _id: false },
 );
 
-const HotelRoomSchema = new mongoose.Schema({
-  image: { type: String, required: true },
-  bedType: { type: String, required: true },
-  facilities: FacilitiSchema,
-  bedCount: { type: Number, required: true },
-  guestsCount: { type: Number, required: true },
-  price: { type: Number, required: true },
-  bookedDates: [BookedDatesSchema],
-});
+const HotelRoomSchema = new mongoose.Schema<HotelRoomsInterface>(
+  {
+    image: { type: String, required: true },
+    bedType: { type: String, required: true },
+    facilities: FacilitiSchema,
+    bedsCount: { type: Number, required: true },
+    adultsCount: { type: Number, required: true },
+    childrensCount: { type: Number, required: true },
+    price: { type: Number, required: true },
+    bookedDates: [BookedDatesSchema],
+  },
+  { _id: false },
+);
 
 export const HotelSchema = new mongoose.Schema<HotelDocumentInterface>(
   {

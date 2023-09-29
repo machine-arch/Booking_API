@@ -22,9 +22,16 @@ export class HotelController {
   public async createHotelDocument(
     @Body() requestBody: CreateHotelDto,
   ): Promise<ResponseDto> {
-    this.hotelService.create(requestBody).then();
+    try {
+      await this.hotelService.create(requestBody);
 
-    return { statusCode: HttpStatus.CREATED, message: 'CREATED' };
+      return { statusCode: HttpStatus.CREATED, message: 'CREATED' };
+    } catch (error) {
+      return {
+        statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+        message: error.message,
+      };
+    }
   }
 
   /**
@@ -37,14 +44,17 @@ export class HotelController {
   public async getAllHotelsWithPag(
     @Query() query: ExpressQuery,
   ): Promise<ResponseDto> {
-    const result: HotelDocumentInterface[] =
+    const result: { hotelList: HotelDocumentInterface[]; totalHotels: number } =
       await this.hotelService.getHotelsWithPag(query);
+
+    const hotels: HotelDocumentInterface[] = result.hotelList;
+    const total: number = result.totalHotels;
 
     return {
       statusCode: HttpStatus.OK,
       message: 'OK',
-      content: result,
-      total: result.length,
+      content: hotels,
+      total: total,
     };
   }
 
