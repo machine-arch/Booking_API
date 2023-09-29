@@ -7,12 +7,12 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { HotelService } from './hotel.service';
-import { CreateHotelDto } from './dto/create-hote.dto';
-import { ResponseDto } from '../../common/dto/http.dto';
+import { HotelService } from '../hotel.service';
+import { CreateHotelDto } from '../dto/create-hote.dto';
+import { ResponseDto } from '../../../common/dto/http.dto';
 import { Query as ExpressQuery } from 'express-serve-static-core';
-import { HotelDocumentInterface } from './interfaces/hotel.interface';
-import { throwNotFoundException } from '../../common/utils/response.hendler';
+import { HotelDocumentInterface } from '../interfaces/hotel.interface';
+import { throwNotFoundException } from '../../../common/utils/response.hendler';
 
 @Controller('v1/hotel')
 export class HotelController {
@@ -27,27 +27,18 @@ export class HotelController {
     return { statusCode: HttpStatus.CREATED, message: 'CREATED' };
   }
 
+  /**
+   * Get all hotels with pagination.
+   * @param query - Query parameters for pagination.
+   * @returns A Promise of ResponseDto containing paginated hotel data.
+   */
+
   @Get()
   public async getAllHotelsWithPag(
     @Query() query: ExpressQuery,
   ): Promise<ResponseDto> {
     const result: HotelDocumentInterface[] =
-      await this.hotelService.getAllHotelsWithPag(query);
-
-    return {
-      statusCode: HttpStatus.OK,
-      message: 'OK',
-      content: result,
-      total: result.length,
-    };
-  }
-
-  @Get('/filter')
-  public async getFilteredHotels(
-    @Body() requestBody: any,
-  ): Promise<ResponseDto> {
-    const result: HotelDocumentInterface[] =
-      await this.hotelService.getFilteredHotels(requestBody);
+      await this.hotelService.getHotelsWithPag(query);
 
     return {
       statusCode: HttpStatus.OK,

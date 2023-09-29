@@ -1,10 +1,13 @@
 import { Query } from 'express-serve-static-core';
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateHotelDto } from './dto/create-hote.dto';
 import { HotelDocumentInterface } from './interfaces/hotel.interface';
-import { Model } from 'mongoose';
+import mongoose, { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
-import { throwInternalErrorException } from 'src/common/utils/response.hendler';
+import {
+  throwInternalErrorException,
+  throwNotFoundException,
+} from 'src/common/utils/response.hendler';
 
 @Injectable()
 export class HotelService {
@@ -21,11 +24,11 @@ export class HotelService {
     return createdHotel;
   }
 
-  public async getAllHotelsWithPag(
+  public async getHotelsWithPag(
     query: Query,
     filerQuery: Record<string, any> = null,
   ): Promise<HotelDocumentInterface[]> {
-    const rePerPage = Number(query.limit);
+    const rePerPage = Number(query.limit) || 10;
     const currentPage: number = Number(query.page) || 1;
     const skip: number = rePerPage * (currentPage - 1);
 
@@ -41,21 +44,28 @@ export class HotelService {
     return hotelList;
   }
 
-  public async getFilteredHotels(requestBody: any) {
+  public async getFilteredHotels(query: Query, requestBody: any) {
     const filterObj: Record<string, any> = {};
     filterObj.location = requestBody.location;
-    // filterObj.rooms = requestBody.rooms.length;
-    // filterObj.sss = requestBody.adults
-    // filterObj.ddd = requestBody.children aks!!!
 
     for (const key in filterObj) {
       if (filterObj[key] === undefined) delete filterObj[key];
     }
 
-    return this.getAllHotelsWithPag({}, filterObj);
+    return this.getHotelsWithPag(query, filterObj);
   }
 
   public async getSingleHotel(id: string): Promise<HotelDocumentInterface> {
-    return this.hotelModel.findById(id).exec();
+    const isValidId: boolean = mongoose.Types.ObjectId.isValid(id);
+
+    if (!isValidId) throw new BadRequestException('INVALID_ID');
+
+    const hotel: HotelDocumentInterface = await this.hotelModel
+      .findById(id)
+      .exec();
+
+    if (!hotel) throwNotFoundException(process.env.APP_LANGUAGES);
+
+    return hotel;
   }
 }

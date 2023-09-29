@@ -31,6 +31,10 @@ export interface HotelRoomsInterface {
   bedCount: number; //ask about
   guestsCount: number; //ask about
   price: number;
+  bookedDates: {
+    startDate: Date;
+    endDate: Date;
+  }[];
 }
 
 export interface HotelDocumentInterface extends mongoose.Document {
