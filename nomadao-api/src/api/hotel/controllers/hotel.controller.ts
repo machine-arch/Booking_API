@@ -9,7 +9,7 @@ import {
 } from '@nestjs/common';
 import { Query as ExpressQuery } from 'express-serve-static-core';
 import { HotelService } from '../hotel.service';
-import { CreateHotelDto } from '../dto/create-hote.dto';
+import { CreateHotelDto } from '../dto/create-hotel.dto';
 import { ResponseDto } from '../../../common/dto/http.dto';
 import { HotelDocumentInterface } from '../interfaces/hotel.interface';
 import { throwNotFoundException } from '../../../common/utils/response.hendler';

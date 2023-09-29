@@ -3,6 +3,7 @@ import { Query as ExpressQuery } from 'express-serve-static-core';
 import { ResponseDto } from '../../../common/dto/http.dto';
 import { HotelDocumentInterface } from '../interfaces/hotel.interface';
 import { HotelService } from '../hotel.service';
+import { HotelsFilterDto } from '../dto/hotels-filter.dto';
 
 @Controller('v1/hotel-filter')
 export class HotelFilterController {
@@ -18,7 +19,7 @@ export class HotelFilterController {
   @Get()
   public async getFilteredHotels(
     @Query() query: ExpressQuery,
-    @Body() requestBody: any,
+    @Body() requestBody: HotelsFilterDto,
   ): Promise<ResponseDto> {
     const result: { hotelList: HotelDocumentInterface[]; totalHotels: number } =
       await this.hotelService.getFilteredHotels(query, requestBody);

@@ -2,12 +2,13 @@ import { Query } from 'express-serve-static-core';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import mongoose, { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
-import { CreateHotelDto } from './dto/create-hote.dto';
+import { CreateHotelDto } from './dto/create-hotel.dto';
 import {
   throwInternalErrorException,
   throwNotFoundException,
 } from '../../common/utils/response.hendler';
 import { HotelDocumentInterface } from './interfaces/hotel.interface';
+import { HotelsFilterDto } from './dto/hotels-filter.dto';
 
 @Injectable()
 export class HotelService {
@@ -48,9 +49,61 @@ export class HotelService {
     return { hotelList, totalHotels };
   }
 
-  public async getFilteredHotels(query: Query, requestBody: any) {
+  public async getFilteredHotels(query: Query, requestBody: HotelsFilterDto) {
     const filterObj: Record<string, any> = {};
-    filterObj.location = requestBody.location;
+
+    // Filter by location
+    if (requestBody.location) {
+      filterObj.location = requestBody.location;
+    }
+
+    // Filter by dates
+    if (requestBody.startDate || requestBody.endDate) {
+      const dateFilter: Record<string, any> = {};
+
+      if (requestBody.startDate) {
+        dateFilter.$gte = new Date(requestBody.startDate);
+      }
+
+      if (requestBody.endDate) {
+        dateFilter.$lte = new Date(requestBody.endDate);
+      }
+
+      filterObj['hotelRooms.bookedDates.startDate'] = {
+        $nin: [dateFilter.$lte, dateFilter.$gte],
+      };
+
+      filterObj['hotelRooms.bookedDates.endDate'] = {
+        $nin: [dateFilter.$lte, dateFilter.$gte],
+      };
+    }
+
+    // Filter hotels with exactly roomsCount rooms
+    if (requestBody.roomsCount) {
+      filterObj['$expr'] = {
+        $eq: [{ $size: '$hotelRooms' }, requestBody.roomsCount],
+      };
+    }
+
+    // Filter by adultsCount
+    if (requestBody.adultsCount) {
+      filterObj['hotelRooms'] = {
+        $elemMatch: {
+          // adultsCount: { $gte: requestBody.adultsCount },
+          adultsCount: requestBody.adultsCount,
+        },
+      };
+    }
+
+    // Filter by childrensCount
+    if (requestBody.childrensCount) {
+      filterObj['hotelRooms'] = {
+        $elemMatch: {
+          // childrensCount: { $gte: requestBody.childrensCount },
+          childrensCount: requestBody.childrensCount,
+        },
+      };
+    }
 
     for (const key in filterObj) {
       if (filterObj[key] === undefined) delete filterObj[key];
