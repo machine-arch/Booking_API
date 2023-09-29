@@ -1,13 +1,13 @@
 import { Query } from 'express-serve-static-core';
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { CreateHotelDto } from './dto/create-hote.dto';
-import { HotelDocumentInterface } from './interfaces/hotel.interface';
 import mongoose, { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
+import { CreateHotelDto } from './dto/create-hote.dto';
 import {
   throwInternalErrorException,
   throwNotFoundException,
-} from 'src/common/utils/response.hendler';
+} from '../../common/utils/response.hendler';
+import { HotelDocumentInterface } from './interfaces/hotel.interface';
 
 @Injectable()
 export class HotelService {

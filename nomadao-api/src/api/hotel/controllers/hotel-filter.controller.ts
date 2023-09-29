@@ -1,6 +1,6 @@
 import { Body, Controller, Get, HttpStatus, Query } from '@nestjs/common';
 import { Query as ExpressQuery } from 'express-serve-static-core';
-import { ResponseDto } from 'src/common/dto/http.dto';
+import { ResponseDto } from '../../../common/dto/http.dto';
 import { HotelDocumentInterface } from '../interfaces/hotel.interface';
 import { HotelService } from '../hotel.service';
 
