@@ -34,4 +34,16 @@ export class HotelFilterController {
       total: total,
     };
   }
+
+  @Get('/ui-countries')
+  public async getUiCountries(): Promise<ResponseDto> {
+    const countries: string[] = await this.hotelService.getUiCountries();
+
+    return {
+      statusCode: HttpStatus.OK,
+      message: 'OK',
+      content: countries,
+      total: countries.length,
+    };
+  }
 }

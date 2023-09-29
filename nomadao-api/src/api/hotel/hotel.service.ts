@@ -125,4 +125,12 @@ export class HotelService {
 
     return hotel;
   }
+
+  public async getUiCountries(): Promise<string[]> {
+    const countries: string[] = await this.hotelModel
+      .distinct('location')
+      .exec();
+
+    return countries;
+  }
 }
