@@ -1,0 +1,22 @@
+[
+  {
+    "key": "havanaLobbyBar",
+    "value": "Havana Lobby Bar"
+  },
+  {
+    "key": "flestaRestaurant",
+    "value": "Flesta Restaurant"
+  },
+  {
+    "key": "hotelTransportService",
+    "value": "Hotel Transport Service"
+  },
+  {
+    "key": "laundryService",
+    "value": "Laundry Service"
+  },
+  {
+    "key": "petsWelcome",
+    "value": "Pets Welcome"
+  }
+]

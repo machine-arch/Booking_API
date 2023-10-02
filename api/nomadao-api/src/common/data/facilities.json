@@ -1,0 +1,22 @@
+[
+  {
+    "key": "wakeUpCall",
+    "value": "Wake-up call"
+  },
+  {
+    "key": "crHire",
+    "value": "Car hire"
+  },
+  {
+    "key": "flatTv",
+    "value": "Flat TV"
+  },
+  {
+    "key": "dryCleaning",
+    "value": "Dry cleaning"
+  },
+  {
+    "key": "internet",
+    "value": "Internet - Wifi"
+  }
+]

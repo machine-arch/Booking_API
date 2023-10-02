@@ -4,6 +4,7 @@ import { ResponseDto } from '../../../common/dto/http.dto';
 import { HotelDocumentInterface } from '../interfaces/hotel.interface';
 import { HotelService } from '../hotel.service';
 import { HotelsFilterDto } from '../dto/hotels-filter.dto';
+import { KeyValuePairInterface } from '../../../common/interfaces/keyValuePair.interface';
 
 @Controller('v1/hotel-filter')
 export class HotelFilterController {
@@ -44,6 +45,23 @@ export class HotelFilterController {
       message: 'OK',
       content: countries,
       total: countries.length,
+    };
+  }
+
+  @Get('/advanced-filter')
+  public async getAdvancedFilterProperties(): Promise<ResponseDto> {
+    const result: {
+      viewMode: KeyValuePairInterface[];
+      sortBy: KeyValuePairInterface[];
+      propertyType: KeyValuePairInterface[];
+      facilities: KeyValuePairInterface[];
+      hotelService: KeyValuePairInterface[];
+    } = await this.hotelService.getAdvancedFilterProperties();
+
+    return {
+      statusCode: HttpStatus.OK,
+      message: 'OK',
+      content: result,
     };
   }
 }

@@ -1,0 +1,22 @@
+[
+  {
+    "key": "partnersHotels",
+    "value": "Partners Hotels"
+  },
+  {
+    "key": "lowPriceFirst",
+    "value": "Low Price First"
+  },
+  {
+    "key": "recomended",
+    "value": "Recomended"
+  },
+  {
+    "key": "highPriceFirst",
+    "value": "High Price First"
+  },
+  {
+    "key": "hightRatingFirst",
+    "value": "High Rating First"
+  }
+]

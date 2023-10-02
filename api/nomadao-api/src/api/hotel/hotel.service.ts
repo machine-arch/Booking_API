@@ -1,3 +1,4 @@
+import * as fs from 'fs';
 import { Query } from 'express-serve-static-core';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import mongoose, { Model } from 'mongoose';
@@ -9,6 +10,7 @@ import {
 } from '../../common/utils/response.hendler';
 import { HotelDocumentInterface } from './interfaces/hotel.interface';
 import { HotelsFilterDto } from './dto/hotels-filter.dto';
+import { KeyValuePairInterface } from '../../common/interfaces/keyValuePair.interface';
 
 @Injectable()
 export class HotelService {
@@ -132,5 +134,28 @@ export class HotelService {
       .exec();
 
     return countries;
+  }
+
+  public async getAdvancedFilterProperties(): Promise<{
+    viewMode: KeyValuePairInterface[];
+    sortBy: KeyValuePairInterface[];
+    propertyType: KeyValuePairInterface[];
+    facilities: KeyValuePairInterface[];
+    hotelService: KeyValuePairInterface[];
+  }> {
+    const [viewMode, sortBy, propertyType, facilities, hotelService] =
+      await Promise.all([
+        JSON.parse(fs.readFileSync('src/common/data/viewMode.json', 'utf-8')),
+        JSON.parse(fs.readFileSync('src/common/data/sort.json', 'utf-8')),
+        JSON.parse(
+          fs.readFileSync('src/common/data/propertyType.json', 'utf-8'),
+        ),
+        JSON.parse(fs.readFileSync('src/common/data/facilities.json', 'utf-8')),
+        JSON.parse(
+          fs.readFileSync('src/common/data/hotelService.json', 'utf-8'),
+        ),
+      ]);
+
+    return { viewMode, sortBy, propertyType, facilities, hotelService };
   }
 }

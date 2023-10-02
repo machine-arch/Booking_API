@@ -1,0 +1,22 @@
+[
+  {
+    "key": "apartments",
+    "value": "Apartments"
+  },
+  {
+    "key": "hotels",
+    "value": "Hotels"
+  },
+  {
+    "key": "homestays",
+    "value": "Homestays"
+  },
+  {
+    "key": "villas",
+    "value": "Villas"
+  },
+  {
+    "key": "motels",
+    "value": "Motels"
+  }
+]
