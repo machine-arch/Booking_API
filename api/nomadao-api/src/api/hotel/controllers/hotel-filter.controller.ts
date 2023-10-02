@@ -36,6 +36,11 @@ export class HotelFilterController {
     };
   }
 
+  /**
+   * Get locations stored in the database.
+   * @returns A Promise of ResponseDto containing all locations stored in the database.
+   */
+
   @Get('/ui-countries')
   public async getUiCountries(): Promise<ResponseDto> {
     const countries: string[] = await this.hotelService.getUiCountries();
@@ -47,6 +52,11 @@ export class HotelFilterController {
       total: countries.length,
     };
   }
+
+  /**
+   * Get advanced filter properties for hotels.
+   * @returns A Promise of ResponseDto containing filer props for advanced filtering.
+   */
 
   @Get('/advanced-filter')
   public async getAdvancedFilterProperties(): Promise<ResponseDto> {

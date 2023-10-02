@@ -18,6 +18,12 @@ import { throwNotFoundException } from '../../../common/utils/response.hendler';
 export class HotelController {
   constructor(private readonly hotelService: HotelService) {}
 
+  /**
+   * create single hotel
+   * @body requestbody - hotel data to be created
+   * @returns A Promise of ResponseDto containing response message.
+   */
+
   @Post()
   public async createHotelDocument(
     @Body() requestBody: CreateHotelDto,
@@ -58,6 +64,12 @@ export class HotelController {
     };
   }
 
+  /**
+   * Get one hotels with its id.
+   * @param id - id of the hotel.
+   * @returns A Promise of ResponseDto containing single hotel data.
+   */
+
   @Get(':id')
   public async getSingleHotel(@Param('id') id: string): Promise<ResponseDto> {
     const result: HotelDocumentInterface =
@@ -65,6 +77,6 @@ export class HotelController {
 
     if (!result) throwNotFoundException(process.env.APP_LANGUAGES);
 
-    return { statusCode: 200, message: 'OK', content: result };
+    return { statusCode: HttpStatus.OK, message: 'OK', content: result };
   }
 }
