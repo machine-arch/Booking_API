@@ -1,0 +1,26 @@
+volumes:
+  data:
+
+services:
+  asset_api:
+    container_name: nomadao-api
+    restart: always
+    build: ../api/nomadao-api/.
+    ports:
+      - 7000:7000
+    volumes:
+      - .:/app/nomadao-api
+    environment:
+      APP_LABEL: asset_api
+      APP_PORT: 7000
+      NODE_ENV: development
+      APP_LANGUAGES: en
+
+  mongoDb:
+    container_name: mongoDB
+    image: mongo:latest
+    volumes:
+      - data:/var/lib/mongodb
+    ports:
+      - 27017:27017
+    restart: always
