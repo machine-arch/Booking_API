@@ -1,14 +1,121 @@
+import { Type } from 'class-transformer';
 import {
   IsArray,
   IsBoolean,
+  IsNotEmpty,
   IsNumber,
   IsOptional,
   IsString,
+  ValidateNested,
 } from 'class-validator';
+
+export class PropertyTypeDto {
+  @IsBoolean()
+  @IsNotEmpty()
+  apartments: boolean;
+
+  @IsBoolean()
+  @IsNotEmpty()
+  hotels: boolean;
+
+  @IsBoolean()
+  @IsNotEmpty()
+  homestays: boolean;
+
+  @IsBoolean()
+  @IsNotEmpty()
+  villas: boolean;
+
+  @IsBoolean()
+  @IsNotEmpty()
+  motels: boolean;
+}
+
+export class FacilitiesDto {
+  @IsBoolean()
+  @IsNotEmpty()
+  wakeUpCall: boolean;
+
+  @IsBoolean()
+  @IsNotEmpty()
+  crHire: boolean;
+
+  @IsBoolean()
+  @IsNotEmpty()
+  flatTv: boolean;
+
+  @IsBoolean()
+  @IsNotEmpty()
+  dryCleaning: boolean;
+
+  @IsBoolean()
+  @IsNotEmpty()
+  internet: boolean;
+}
+
+export class HotelServiceDto {
+  @IsBoolean()
+  @IsNotEmpty()
+  havanaLobbyBar: boolean;
+
+  @IsBoolean()
+  @IsNotEmpty()
+  flestaRestaurant: boolean;
+
+  @IsBoolean()
+  @IsNotEmpty()
+  hotelTransportService: boolean;
+
+  @IsBoolean()
+  @IsNotEmpty()
+  laundryService: boolean;
+
+  @IsBoolean()
+  @IsNotEmpty()
+  petsWelcome: boolean;
+}
+
+export class HotelRoomsDto {
+  @IsString()
+  @IsOptional()
+  image: string;
+
+  @IsString()
+  @IsOptional()
+  bedType: string;
+
+  @IsOptional()
+  @ValidateNested({ each: true })
+  @Type(() => FacilitiesDto)
+  facilities: FacilitiesDto;
+
+  @IsNumber()
+  @IsNotEmpty()
+  bedsCount: number;
+
+  @IsNumber()
+  @IsOptional()
+  adultsCount: number;
+
+  @IsNumber()
+  @IsOptional()
+  childrensCount: number;
+
+  @IsNumber()
+  @IsNotEmpty()
+  price: number;
+
+  @IsArray()
+  @IsNotEmpty()
+  bookedDates: {
+    startDate: Date;
+    endDate: Date;
+  }[];
+}
 
 export class CreateHotelDto {
   @IsString()
-  @IsOptional()
+  @IsNotEmpty()
   hotelName: string;
 
   @IsNumber()
@@ -16,7 +123,7 @@ export class CreateHotelDto {
   rating: number;
 
   @IsString()
-  @IsOptional()
+  @IsNotEmpty()
   location: string;
 
   @IsNumber()
@@ -72,63 +179,19 @@ export class CreateHotelDto {
   @IsOptional()
   price: number;
 
-  @IsBoolean()
-  @IsOptional()
-  apartments: boolean;
+  @ValidateNested()
+  @Type(() => PropertyTypeDto)
+  propertyType: PropertyTypeDto;
 
-  @IsBoolean()
-  @IsOptional()
-  hotels: boolean;
+  @ValidateNested()
+  @Type(() => FacilitiesDto)
+  facilities: FacilitiesDto;
 
-  @IsBoolean()
-  @IsOptional()
-  homestays: boolean;
+  @ValidateNested()
+  @Type(() => HotelServiceDto)
+  hotelService: HotelServiceDto;
 
-  @IsBoolean()
-  @IsOptional()
-  villas: boolean;
-
-  @IsBoolean()
-  @IsOptional()
-  motels: boolean;
-
-  @IsBoolean()
-  @IsOptional()
-  wakeUpCall: boolean;
-
-  @IsBoolean()
-  @IsOptional()
-  crHire: boolean;
-
-  @IsBoolean()
-  @IsOptional()
-  flatTv: boolean;
-
-  @IsBoolean()
-  @IsOptional()
-  dryCleaning: boolean;
-
-  @IsBoolean()
-  @IsOptional()
-  internet: boolean;
-
-  @IsBoolean()
-  @IsOptional()
-  havanaLobbyBar: boolean;
-
-  @IsBoolean()
-  @IsOptional()
-  flestaRestaurant: boolean;
-
-  @IsBoolean()
-  @IsOptional()
-  hotelTransportService: boolean;
-
-  @IsBoolean()
-  @IsOptional()
-  laundryService: boolean;
-
-  @IsBoolean()
-  @IsOptional()
-  petsWelcome: boolean;
+  @ValidateNested()
+  @Type(() => HotelRoomsDto)
+  hotelRooms: HotelRoomsDto[];
 }
