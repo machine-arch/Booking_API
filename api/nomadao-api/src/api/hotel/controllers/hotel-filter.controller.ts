@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpStatus, Query } from '@nestjs/common';
+import { Body, Controller, Get, HttpStatus, Post, Query } from '@nestjs/common';
 import { Query as ExpressQuery } from 'express-serve-static-core';
 import { ResponseDto } from '../../../common/dto/http.dto';
 import { HotelDocumentInterface } from '../interfaces/hotel.interface';
@@ -17,7 +17,7 @@ export class HotelFilterController {
    * @returns A Promise of ResponseDto containing filtered hotel data.
    */
 
-  @Get()
+  @Post()
   public async getFilteredHotels(
     @Query() query: ExpressQuery,
     @Body() requestBody: HotelsFilterDto,
