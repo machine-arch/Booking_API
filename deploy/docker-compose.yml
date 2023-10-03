@@ -2,7 +2,7 @@ volumes:
   data:
 
 services:
-  asset_api:
+  nomadao-api:
     container_name: nomadao-api
     restart: always
     build: ../api/nomadao-api/.
@@ -11,7 +11,7 @@ services:
     volumes:
       - .:/app/nomadao-api
     environment:
-      APP_LABEL: asset_api
+      APP_LABEL: nomadao-api
       APP_PORT: 7000
       NODE_ENV: development
       APP_LANGUAGES: en
