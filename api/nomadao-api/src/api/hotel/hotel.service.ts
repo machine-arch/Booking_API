@@ -8,10 +8,15 @@ import {
   throwInternalErrorException,
   throwNotFoundException,
 } from '../../common/utils/response.hendler';
-import { HotelDocumentInterface } from './interfaces/hotel.interface';
+import {
+  HotelDocumentInterface,
+  HotelRoomsInterface,
+} from './interfaces/hotel.interface';
 import { HotelsFilterDto } from './dto/hotels-filter.dto';
 import { KeyValuePairInterface } from '../../common/interfaces/keyValuePair.interface';
 import { LocationSuggestionsDto } from './dto/location-suggetion.dto';
+import { RoomsFilterDto } from './dto/rooms-filter.dto';
+import { AnyARecord } from 'dns';
 
 @Injectable()
 export class HotelService {
@@ -160,6 +165,32 @@ export class HotelService {
     return this.getHotelsWithPag(query, filterObj);
   }
 
+  public async getFilteredRooms(
+    requestBody: RoomsFilterDto,
+  ): Promise<{ room: HotelRoomsInterface; count: number }> {
+    const { hotelId, roomType } = {
+      hotelId: requestBody.hotelId,
+      roomType: requestBody.roomType,
+    };
+
+    const hotel: HotelDocumentInterface = await this.hotelModel
+      .findById(hotelId)
+      .exec();
+
+    if (!hotel) throwNotFoundException(process.env.APP_LANGUAGES);
+
+    const roomsWithfilteredRoomType: HotelRoomsInterface[] =
+      hotel.hotelRooms.filter(
+        (room: HotelRoomsInterface) => room.roomType === roomType,
+      );
+
+    const room: HotelRoomsInterface = roomsWithfilteredRoomType[0];
+
+    const count: number = roomsWithfilteredRoomType.length;
+
+    return { room, count };
+  }
+
   public async getSugestions(
     requestBody: LocationSuggestionsDto,
   ): Promise<string[]> {
@@ -222,7 +253,8 @@ export class HotelService {
     const hotel: HotelDocumentInterface = await this.hotelModel
       .findById(id)
       .exec();
-
+    console.log(hotel.hotelRooms);
+    console.log(typeof hotel.hotelRooms);
     if (!hotel) throwNotFoundException(process.env.APP_LANGUAGES);
 
     return hotel;

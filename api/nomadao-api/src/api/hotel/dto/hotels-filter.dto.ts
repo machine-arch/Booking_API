@@ -4,6 +4,10 @@ import { HotelReviewAndStarsEnum } from '../../../common/interfaces/hotelReviewA
 export class HotelsFilterDto {
   @IsString()
   @IsOptional()
+  id: string;
+
+  @IsString()
+  @IsOptional()
   location: string;
 
   @IsNumber()

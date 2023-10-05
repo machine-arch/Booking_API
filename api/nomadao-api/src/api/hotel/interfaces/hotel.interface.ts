@@ -27,6 +27,7 @@ export interface HotelServiceInterface {
 export interface HotelRoomsInterface {
   image: string;
   bedType: string;
+  roomType: string;
   facilities: FacilitiesInterface;
   bedsCount: number;
   adultsCount: number;

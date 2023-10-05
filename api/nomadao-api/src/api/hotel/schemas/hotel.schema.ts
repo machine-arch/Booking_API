@@ -59,6 +59,7 @@ const HotelRoomSchema = new mongoose.Schema<HotelRoomsInterface>(
     childrensCount: { type: Number, required: true },
     price: { type: Number, required: true },
     bookedDates: [BookedDatesSchema],
+    roomType: { type: String, required: true },
   },
   { _id: false },
 );

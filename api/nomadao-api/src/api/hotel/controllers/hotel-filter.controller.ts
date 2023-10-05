@@ -1,11 +1,15 @@
 import { Body, Controller, Get, HttpStatus, Post, Query } from '@nestjs/common';
 import { Query as ExpressQuery } from 'express-serve-static-core';
 import { ResponseDto } from '../../../common/dto/http.dto';
-import { HotelDocumentInterface } from '../interfaces/hotel.interface';
+import {
+  HotelDocumentInterface,
+  HotelRoomsInterface,
+} from '../interfaces/hotel.interface';
 import { HotelService } from '../hotel.service';
 import { HotelsFilterDto } from '../dto/hotels-filter.dto';
 import { KeyValuePairInterface } from '../../../common/interfaces/keyValuePair.interface';
 import { LocationSuggestionsDto } from '../dto/location-suggetion.dto';
+import { RoomsFilterDto } from '../dto/rooms-filter.dto';
 
 @Controller('v1/hotel-filter')
 export class HotelFilterController {
@@ -33,6 +37,24 @@ export class HotelFilterController {
       statusCode: HttpStatus.OK,
       message: 'OK',
       content: hotels,
+      total: total,
+    };
+  }
+
+  @Post('/rooms-filter')
+  public async getFilteredRooms(
+    @Body() requestBody: RoomsFilterDto,
+  ): Promise<ResponseDto> {
+    const result: { room: HotelRoomsInterface; count: number } =
+      await this.hotelService.getFilteredRooms(requestBody);
+
+    const hotelRoom: HotelRoomsInterface = result.room;
+    const total: number = result.count;
+
+    return {
+      statusCode: HttpStatus.OK,
+      message: 'OK',
+      content: hotelRoom,
       total: total,
     };
   }

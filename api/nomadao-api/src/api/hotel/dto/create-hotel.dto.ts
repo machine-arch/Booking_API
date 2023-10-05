@@ -84,6 +84,10 @@ export class HotelRoomsDto {
   @IsOptional()
   bedType: string;
 
+  @IsString()
+  @IsOptional()
+  roomType: string;
+
   @IsOptional()
   @ValidateNested({ each: true })
   @Type(() => FacilitiesDto)
