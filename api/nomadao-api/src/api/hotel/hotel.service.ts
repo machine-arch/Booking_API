@@ -11,6 +11,7 @@ import {
 import { HotelDocumentInterface } from './interfaces/hotel.interface';
 import { HotelsFilterDto } from './dto/hotels-filter.dto';
 import { KeyValuePairInterface } from '../../common/interfaces/keyValuePair.interface';
+import { LocationSuggestionsDto } from './dto/location-suggetion.dto';
 
 @Injectable()
 export class HotelService {
@@ -18,14 +19,6 @@ export class HotelService {
     @InjectModel('HOTELS')
     private readonly hotelModel: Model<HotelDocumentInterface>,
   ) {}
-
-  public async create(hotel: CreateHotelDto): Promise<HotelDocumentInterface> {
-    const createdHotel: HotelDocumentInterface = await new this.hotelModel(
-      hotel,
-    ).save();
-
-    return createdHotel;
-  }
 
   public async getHotelsWithPag(
     query: Query,
@@ -167,18 +160,17 @@ export class HotelService {
     return this.getHotelsWithPag(query, filterObj);
   }
 
-  public async getSingleHotel(id: string): Promise<HotelDocumentInterface> {
-    const isValidId: boolean = mongoose.Types.ObjectId.isValid(id);
-
-    if (!isValidId) throw new BadRequestException('INVALID_ID');
-
-    const hotel: HotelDocumentInterface = await this.hotelModel
-      .findById(id)
+  public async getSugestions(
+    requestBody: LocationSuggestionsDto,
+  ): Promise<string[]> {
+    const suggestionString: string = requestBody.locationSuggestions;
+    const regex = new RegExp(`^${suggestionString}`, 'i');
+    const sugestions: string[] = await this.hotelModel
+      .find({ location: { $regex: regex } })
+      .distinct('location')
       .exec();
 
-    if (!hotel) throwNotFoundException(process.env.APP_LANGUAGES);
-
-    return hotel;
+    return sugestions;
   }
 
   public async getUiCountries(): Promise<string[]> {
@@ -210,5 +202,29 @@ export class HotelService {
       ]);
 
     return { viewMode, sortBy, propertyType, facilities, hotelService };
+  }
+
+  // not used services
+
+  public async create(hotel: CreateHotelDto): Promise<HotelDocumentInterface> {
+    const createdHotel: HotelDocumentInterface = await new this.hotelModel(
+      hotel,
+    ).save();
+
+    return createdHotel;
+  }
+
+  public async getSingleHotel(id: string): Promise<HotelDocumentInterface> {
+    const isValidId: boolean = mongoose.Types.ObjectId.isValid(id);
+
+    if (!isValidId) throw new BadRequestException('INVALID_ID');
+
+    const hotel: HotelDocumentInterface = await this.hotelModel
+      .findById(id)
+      .exec();
+
+    if (!hotel) throwNotFoundException(process.env.APP_LANGUAGES);
+
+    return hotel;
   }
 }

@@ -5,6 +5,7 @@ import { HotelDocumentInterface } from '../interfaces/hotel.interface';
 import { HotelService } from '../hotel.service';
 import { HotelsFilterDto } from '../dto/hotels-filter.dto';
 import { KeyValuePairInterface } from '../../../common/interfaces/keyValuePair.interface';
+import { LocationSuggestionsDto } from '../dto/location-suggetion.dto';
 
 @Controller('v1/hotel-filter')
 export class HotelFilterController {
@@ -33,6 +34,26 @@ export class HotelFilterController {
       message: 'OK',
       content: hotels,
       total: total,
+    };
+  }
+
+  /**
+   * Get hotels locations by suggesten string.
+   * @Body requestBody - suggestion string.
+   * @returns A Promise of ResponseDto containing found hotels locations string.
+   */
+
+  @Post('/sugestions')
+  public async getSugestions(
+    @Body() requestBody: LocationSuggestionsDto,
+  ): Promise<ResponseDto> {
+    const result: string[] = await this.hotelService.getSugestions(requestBody);
+
+    return {
+      statusCode: HttpStatus.OK,
+      message: 'OK',
+      content: result,
+      total: result.length,
     };
   }
 
