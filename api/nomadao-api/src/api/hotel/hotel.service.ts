@@ -16,7 +16,6 @@ import { HotelsFilterDto } from './dto/hotels-filter.dto';
 import { KeyValuePairInterface } from '../../common/interfaces/keyValuePair.interface';
 import { LocationSuggestionsDto } from './dto/location-suggetion.dto';
 import { RoomsFilterDto } from './dto/rooms-filter.dto';
-import { AnyARecord } from 'dns';
 
 @Injectable()
 export class HotelService {
