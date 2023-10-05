@@ -259,4 +259,12 @@ export class HotelService {
 
     return hotel;
   }
+
+  public async deleteSingleHotel(id: string) {
+    const isValidId: boolean = mongoose.Types.ObjectId.isValid(id);
+
+    if (!isValidId) throw new BadRequestException('INVALID_ID');
+
+    return this.hotelModel.findByIdAndDelete(id).exec();
+  }
 }

@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpStatus,
   Param,
@@ -78,5 +79,21 @@ export class HotelController {
     if (!result) throwNotFoundException(process.env.APP_LANGUAGES);
 
     return { statusCode: HttpStatus.OK, message: 'OK', content: result };
+  }
+
+  @Delete(':id')
+  public async deleteSingleHotel(
+    @Param('id') id: string,
+  ): Promise<ResponseDto> {
+    try {
+      this.hotelService.deleteSingleHotel(id).then();
+
+      return { statusCode: 200, message: 'Deleted' };
+    } catch (error) {
+      return {
+        statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+        message: error.message,
+      };
+    }
   }
 }
