@@ -77,15 +77,15 @@ export class HotelServiceDto {
 
 export class HotelRoomsDto {
   @IsString()
-  @IsOptional()
+  @IsNotEmpty()
   image: string;
 
   @IsString()
-  @IsOptional()
+  @IsNotEmpty()
   bedType: string;
 
   @IsString()
-  @IsOptional()
+  @IsNotEmpty()
   roomType: string;
 
   @IsOptional()
@@ -98,11 +98,11 @@ export class HotelRoomsDto {
   bedsCount: number;
 
   @IsNumber()
-  @IsOptional()
+  @IsNotEmpty()
   adultsCount: number;
 
   @IsNumber()
-  @IsOptional()
+  @IsNotEmpty()
   childrensCount: number;
 
   @IsNumber()
@@ -123,7 +123,7 @@ export class CreateHotelDto {
   hotelName: string;
 
   @IsNumber()
-  @IsOptional()
+  @IsNotEmpty()
   rating: number;
 
   @IsString()
@@ -131,7 +131,7 @@ export class CreateHotelDto {
   location: string;
 
   @IsNumber()
-  @IsOptional()
+  @IsNotEmpty()
   reviews: number;
 
   @IsOptional()
