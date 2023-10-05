@@ -168,25 +168,76 @@ export class HotelService {
   public async getFilteredRooms(
     requestBody: RoomsFilterDto,
   ): Promise<{ room: HotelRoomsInterface; count: number }> {
-    const { hotelId, roomType } = {
-      hotelId: requestBody.hotelId,
-      roomType: requestBody.roomType,
-    };
+    let filteredHotelRooms: HotelRoomsInterface[] = [];
 
     const hotel: HotelDocumentInterface = await this.hotelModel
-      .findById(hotelId)
+      .findById(requestBody.hotelId)
       .exec();
 
     if (!hotel) throwNotFoundException(process.env.APP_LANGUAGES);
 
-    const roomsWithfilteredRoomType: HotelRoomsInterface[] =
-      hotel.hotelRooms.filter(
-        (room: HotelRoomsInterface) => room.roomType === roomType,
+    if (hotel.hotelRooms.length === 0)
+      throwNotFoundException(process.env.APP_LANGUAGES);
+
+    filteredHotelRooms.push(...hotel.hotelRooms);
+
+    if (requestBody.roomType) {
+      filteredHotelRooms = filteredHotelRooms.filter(
+        (room: HotelRoomsInterface) => room.roomType === requestBody.roomType,
       );
+    }
 
-    const room: HotelRoomsInterface = roomsWithfilteredRoomType[0];
+    if (requestBody.startDate || requestBody.endDate) {
+      if (requestBody.startDate && requestBody.endDate) {
+        filteredHotelRooms = filteredHotelRooms.filter(
+          (room: HotelRoomsInterface) => {
+            for (const bookedDate of room.bookedDates) {
+              const startDate = new Date(requestBody.startDate).getTime();
+              const endDate = new Date(requestBody.endDate).getTime();
+              const roomStartDate = new Date(bookedDate.startDate).getTime();
+              const roomEndDate = new Date(bookedDate.endDate).getTime();
 
-    const count: number = roomsWithfilteredRoomType.length;
+              if (startDate >= roomEndDate || endDate <= roomStartDate) {
+                return true;
+              }
+            }
+            return false;
+          },
+        );
+      } else if (requestBody.startDate) {
+        filteredHotelRooms = filteredHotelRooms.filter(
+          (room: HotelRoomsInterface) => {
+            for (const bookedDate of room.bookedDates) {
+              const startDate = new Date(requestBody.startDate).getTime();
+              const roomStartDate = new Date(bookedDate.startDate).getTime();
+
+              if (startDate >= roomStartDate) {
+                return true;
+              }
+            }
+            return false;
+          },
+        );
+      } else if (requestBody.endDate) {
+        filteredHotelRooms = filteredHotelRooms.filter(
+          (room: HotelRoomsInterface) => {
+            for (const bookedDate of room.bookedDates) {
+              const endDate = new Date(requestBody.endDate).getTime();
+              const roomEndDate = new Date(bookedDate.endDate).getTime();
+
+              if (endDate <= roomEndDate) {
+                return true;
+              }
+            }
+            return false;
+          },
+        );
+      }
+    }
+
+    const room: HotelRoomsInterface = filteredHotelRooms[0];
+
+    const count: number = filteredHotelRooms.length;
 
     return { room, count };
   }

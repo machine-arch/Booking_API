@@ -1,4 +1,11 @@
-import { IsMongoId, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import {
+  IsArray,
+  IsDate,
+  IsMongoId,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 
 export class RoomsFilterDto {
   @IsString()
@@ -9,4 +16,12 @@ export class RoomsFilterDto {
   @IsString()
   @IsOptional()
   roomType: string;
+
+  @IsString()
+  @IsOptional()
+  startDate: Date;
+
+  @IsString()
+  @IsOptional()
+  endDate: Date;
 }
