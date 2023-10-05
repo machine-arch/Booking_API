@@ -31,7 +31,7 @@ export class HotelService {
     query: Query,
     filerQuery: Record<string, any> = null,
   ): Promise<{ hotelList: HotelDocumentInterface[]; totalHotels: number }> {
-    const rePerPage = Number(query.limit) || 10;
+    const rePerPage = Number(query.limit);
     const currentPage: number = Number(query.page) || 1;
     const skip: number = rePerPage * (currentPage - 1);
 
@@ -44,9 +44,9 @@ export class HotelService {
 
     if (!hotelList) throwInternalErrorException(process.env.APP_LANGUAGES);
 
-    const totalHotels: number = await this.hotelModel
-      .countDocuments(filerQuery)
-      .exec();
+    const totalHotels: number = await this.hotelModel.countDocuments(
+      filerQuery,
+    );
 
     return { hotelList, totalHotels };
   }
@@ -91,7 +91,6 @@ export class HotelService {
     if (requestBody.adultsCount) {
       filterObj['hotelRooms'] = {
         $elemMatch: {
-          // adultsCount: { $gte: requestBody.adultsCount },
           adultsCount: requestBody.adultsCount,
         },
       };
@@ -101,10 +100,64 @@ export class HotelService {
     if (requestBody.childrensCount) {
       filterObj['hotelRooms'] = {
         $elemMatch: {
-          // childrensCount: { $gte: requestBody.childrensCount },
           childrensCount: requestBody.childrensCount,
         },
       };
+    }
+
+    // Filter by price
+    if (requestBody.minPrice || requestBody.maxPrice) {
+      const priceFilter: Record<string, any> = {};
+
+      if (requestBody.minPrice) {
+        priceFilter.$gte = requestBody.minPrice;
+      }
+
+      if (requestBody.maxPrice) {
+        priceFilter.$lte = requestBody.maxPrice;
+      }
+
+      filterObj['hotelRooms.price'] = priceFilter;
+    }
+
+    //filter by hotel rating
+    if (requestBody.rating) {
+      filterObj.rating = requestBody.rating;
+    }
+
+    //filter by hotel review
+    if (requestBody.reviews) {
+      filterObj.reviews = requestBody.reviews;
+    }
+
+    //filter by property type
+    if (requestBody.propertyTypes && requestBody.propertyTypes.length > 0) {
+      const propertyTypeFilter = {
+        $or: requestBody.propertyTypes.map((propertyType) => ({
+          [`propertyType.${propertyType}`]: true,
+        })),
+      };
+      filterObj['$or'] = propertyTypeFilter.$or;
+    }
+
+    //filter by facilities
+    if (requestBody.facilities && requestBody.facilities.length > 0) {
+      const facilitiesFilter = {
+        $or: requestBody.facilities.map((facility) => ({
+          [`facilities.${facility}`]: true,
+        })),
+      };
+      filterObj['$or'] = facilitiesFilter.$or;
+    }
+
+    //filter by hotel services
+    if (requestBody.hotelServices && requestBody.hotelServices.length > 0) {
+      const hotelServicesFilter = {
+        $or: requestBody.hotelServices.map((hotelService) => ({
+          [`hotelService.${hotelService}`]: true,
+        })),
+      };
+      filterObj['$or'] = hotelServicesFilter.$or;
     }
 
     for (const key in filterObj) {
