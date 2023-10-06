@@ -53,7 +53,8 @@ export class HotelService {
 
     // Filter by location
     if (requestBody.location) {
-      filterObj.location = requestBody.location;
+      const locationRegex = new RegExp(requestBody.location, 'i');
+      filterObj.location = { $regex: locationRegex };
     }
 
     // Filter by dates
@@ -158,7 +159,8 @@ export class HotelService {
     }
 
     for (const key in filterObj) {
-      if (filterObj[key] === undefined) delete filterObj[key];
+      if (filterObj[key] === undefined || filterObj[key] === null)
+        delete filterObj[key];
     }
 
     return this.getHotelsWithPag(query, filterObj);
