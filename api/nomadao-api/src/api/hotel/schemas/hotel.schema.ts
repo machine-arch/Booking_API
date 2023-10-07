@@ -53,13 +53,14 @@ const HotelRoomSchema = new mongoose.Schema<HotelRoomsInterface>(
   {
     image: { type: String, required: true },
     bedType: { type: String, required: true },
+    roomType: { type: String, required: true },
+    metaData: { type: String, required: false },
     facilities: FacilitiSchema,
     bedsCount: { type: Number, required: true },
     adultsCount: { type: Number, required: true },
     childrensCount: { type: Number, required: true },
     price: { type: Number, required: true },
     bookedDates: [BookedDatesSchema],
-    roomType: { type: String, required: true },
   },
   { _id: false },
 );
