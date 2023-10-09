@@ -72,6 +72,7 @@ export const HotelSchema = new mongoose.Schema<HotelDocumentInterface>(
     location: { type: String, required: true },
     reviews: { type: Number, required: true },
     images: { type: [String], required: true },
+    metaData: { type: String, required: false },
     description: { type: String, required: true },
     longitude: { type: Number, required: true },
     latitude: { type: Number, required: true },
