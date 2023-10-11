@@ -11,106 +11,106 @@ import {
 
 export class PropertyTypeDto {
   @IsBoolean()
-  @IsNotEmpty()
+  @IsOptional()
   apartments: boolean;
 
   @IsBoolean()
-  @IsNotEmpty()
+  @IsOptional()
   hotels: boolean;
 
   @IsBoolean()
-  @IsNotEmpty()
+  @IsOptional()
   homestays: boolean;
 
   @IsBoolean()
-  @IsNotEmpty()
+  @IsOptional()
   villas: boolean;
 
   @IsBoolean()
-  @IsNotEmpty()
+  @IsOptional()
   motels: boolean;
 }
 
 export class FacilitiesDto {
   @IsBoolean()
-  @IsNotEmpty()
+  @IsOptional()
   wakeUpCall: boolean;
 
   @IsBoolean()
-  @IsNotEmpty()
+  @IsOptional()
   crHire: boolean;
 
   @IsBoolean()
-  @IsNotEmpty()
+  @IsOptional()
   flatTv: boolean;
 
   @IsBoolean()
-  @IsNotEmpty()
+  @IsOptional()
   dryCleaning: boolean;
 
   @IsBoolean()
-  @IsNotEmpty()
+  @IsOptional()
   internet: boolean;
 }
 
 export class HotelServiceDto {
   @IsBoolean()
-  @IsNotEmpty()
+  @IsOptional()
   havanaLobbyBar: boolean;
 
   @IsBoolean()
-  @IsNotEmpty()
+  @IsOptional()
   flestaRestaurant: boolean;
 
   @IsBoolean()
-  @IsNotEmpty()
+  @IsOptional()
   hotelTransportService: boolean;
 
   @IsBoolean()
-  @IsNotEmpty()
+  @IsOptional()
   laundryService: boolean;
 
   @IsBoolean()
-  @IsNotEmpty()
+  @IsOptional()
   petsWelcome: boolean;
 }
 
 export class HotelRoomsDto {
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   image: string;
 
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   bedType: string;
 
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   roomType: string;
 
   @IsOptional()
-  @ValidateNested({ each: true })
+  @ValidateNested({ each: false })
   @Type(() => FacilitiesDto)
   facilities: FacilitiesDto;
 
   @IsNumber()
-  @IsNotEmpty()
+  @IsOptional()
   bedsCount: number;
 
   @IsNumber()
-  @IsNotEmpty()
+  @IsOptional()
   adultsCount: number;
 
   @IsNumber()
-  @IsNotEmpty()
+  @IsOptional()
   childrensCount: number;
 
   @IsNumber()
-  @IsNotEmpty()
+  @IsOptional()
   price: number;
 
   @IsArray()
-  @IsNotEmpty()
+  @IsOptional()
   bookedDates: {
     startDate: Date;
     endDate: Date;
@@ -119,25 +119,28 @@ export class HotelRoomsDto {
 
 export class CreateHotelDto {
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   hotelName: string;
 
   @IsNumber()
-  @IsNotEmpty()
+  @IsOptional()
   rating: number;
 
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   location: string;
 
   @IsNumber()
-  @IsNotEmpty()
+  @IsOptional()
   reviews: number;
 
   @IsOptional()
   @IsArray()
   @IsString({ each: true })
   images: string[];
+
+  @IsOptional()
+  metadata: string;
 
   @IsString()
   @IsOptional()

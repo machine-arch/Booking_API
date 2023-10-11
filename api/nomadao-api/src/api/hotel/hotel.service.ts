@@ -289,7 +289,7 @@ export class HotelService {
 
   // not used services
 
-  public async create(hotel: CreateHotelDto): Promise<HotelDocumentInterface> {
+  public async create(hotel: any): Promise<HotelDocumentInterface> {
     const createdHotel: HotelDocumentInterface = await new this.hotelModel(
       hotel,
     ).save();

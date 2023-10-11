@@ -11,5 +11,6 @@ import { HotelFilterController } from './controllers/hotel-filter.controller';
   ],
   controllers: [HotelController, HotelFilterController],
   providers: [HotelService],
+  exports: [HotelService],
 })
 export class HotelModule {}

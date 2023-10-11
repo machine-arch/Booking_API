@@ -10,6 +10,7 @@ const format: any = winston.format;
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { HotelModule } from './api/hotel/hotel.module';
+import { SeederModule } from './features/seeder/seeder.module';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const ecsFormat: any = require('@elastic/ecs-winston-format');
@@ -30,9 +31,10 @@ const { combine, label } = format;
       transports: [new winston.transports.Console()],
     }),
     //MongooseModule.forRoot(process.env.DATABASE_CONNECTION_URL_FROM_DOCKER),
-    //MongooseModule.forRoot(process.env.DATABASE_CONNECTION_URL_FROM_LOCALHOST),
-    MongooseModule.forRoot(process.env.DATABASE_CONNECTION_URL),
+    MongooseModule.forRoot(process.env.DATABASE_CONNECTION_URL_FROM_LOCALHOST),
+    //MongooseModule.forRoot(process.env.DATABASE_CONNECTION_URL),
     HotelModule,
+    SeederModule,
   ],
   controllers: [AppController],
   providers: [AppService],

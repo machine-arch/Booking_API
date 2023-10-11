@@ -47,7 +47,7 @@ export interface HotelDocumentInterface extends mongoose.Document {
   location: string;
   reviews: number;
   images: string[];
-  metaData: string;
+  metadata: string;
   description: string;
   longitude: number;
   latitude: number;
