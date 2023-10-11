@@ -7,7 +7,6 @@ export class SeederService {
   constructor(private readonly hotelService: HotelService) {}
 
   public async uploadExcel(file: any) {
-    console.log(file);
     try {
       const workbook = new ExcelJS.Workbook();
       const buffer = file.buffer;
@@ -36,13 +35,7 @@ export class SeederService {
           rating: row.getCell(4).value,
           location: row.getCell(2).value,
           reviews: 0,
-          images: [
-            row.getCell(10).value,
-            row.getCell(11).value,
-            // row.getCell(16).value,
-            // row.getCell(17).value,
-            // row.getCell(18).value,
-          ],
+          images: [row.getCell(11).value, row.getCell(12).value],
           description: row.getCell(5).value,
           longitude: row.getCell(7).value,
           latitude: row.getCell(6).value,
@@ -78,7 +71,10 @@ export class SeederService {
           },
           hotelRooms: [
             {
-              image: row.getCell(13).value,
+              image:
+                row.getCell(16).value === null || row.getCell(16).value === ''
+                  ? 'https://cf.bstatic.com/xdata/images/hotel/max1024x768/21299833.jpg?k=d918b33e0a10e8fbd3a9edcb3c922ed20243bf2ed46e3798811005c48e29ccf4&o=&hp=1'
+                  : row.getCell(16).value,
               bedType: '',
               roomType: '',
               metaData: '',
