@@ -24,7 +24,7 @@ export class SeederService {
 
         function arrayToObj(array) {
           const obj = {};
-          array.forEach((item) => {
+          array.forEach((item: any) => {
             obj[item] = true;
           });
           return obj;
