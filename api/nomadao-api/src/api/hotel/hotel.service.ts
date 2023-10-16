@@ -287,8 +287,6 @@ export class HotelService {
     return { viewMode, sortBy, propertyType, facilities, hotelService };
   }
 
-  // not used services
-
   public async create(hotel: CreateHotelDto): Promise<HotelDocumentInterface> {
     const createdHotel: HotelDocumentInterface = await new this.hotelModel(
       hotel,
